@@ -63,28 +63,33 @@ class UsersController < ApplicationController
   end
 
   # POST /users/follows
-  def Follows
-    @user = User.find(params[:id])
-    @follows = User.find(params[:follows_id])
-
-    if @user.follows << @follows
-      head :no_content
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
-  end
+ def add_follows
+	#params[:id] is user who follows 
+	#params[:follows_id] is user to be followed
+	
+	#make follower
+	@follower = User.find(params[:id])
+	
+	#make followed
+	@followed = User.find(params[:follows_id])
+	
+	if 
+		@follower.follows << @followed
+		head :no_content
+	else
+		render json: @follower.errors, status: :unprocessable_entity
+	end
+end
 
   # DELETE /users/follows/1/2
   def delete_follows
-    @user = User.find(params[:id])
-    @follows = User.find(params[:follows_id])
+   @follower = User.find(params[:id])
+	@followed = User.find(params[:follows_id])
 
-    if @user.follows.delete(@follows)
-      head :no_content
-    else
-      render json: @user.errors, status: :unprocessable_entity
-    end
-  end
+	@follower.follows.delete(@followed)
+		head :no_content
+		
+	end	
 
 def splatts
   @user = User.find(params[:id])
