@@ -15,17 +15,22 @@ class SplattsController < ApplicationController
     render json: @splatt
   end
 
+
   # POST /splatts
   # POST /splatts.json
-  def create
-    @splatt = Splatt.new(splatts_params(params[:splatt]))
 
-    if @splatt.save
-      render json: @splatt, status: :created, location: @splatt
-    else
-      render json: @splatt.errors, status: :unprocessable_entity
-    end
-end
+ def create
+	user = User.find(params[:splatt][:user])
+
+	@splatt = Splatt.new({:body => params[:body]})
+	if @user.splatts.push(splatt)
+	render json: splatt, status: :created, location: @user
+	else
+	render json: @user.errors, status: :unprocessable_entity
+	end
+     end
+
+
 
   # DELETE /splatts/1
   # DELETE /splatts/1.json
