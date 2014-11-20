@@ -1,18 +1,20 @@
-Rails.application.routes.draw do
-  resources :splatts, except: [:new, :edit]
+Splatter::Application.routes.draw do
+resources :splatts, except: [:new, :edit]
+resources :users, except: [:new, :edit]
 
-match 'users', to: 'users#index', via: [:options]
-match 'users/:id', to: 'users#show', via: [:options]
+get 'users/:id' => 'users#show', :constraints => {:id => /[0-9a-zA-Z\-\.\@]+/}
 
-  resources :users, except: [:new, :edit]
+get 'users/splatts/:id' => 'users#splatts', :constraints => {:id => /[0-9A-Za-z\-\.\@]+/}
 
-   get 'users/splatts/:id' => 'users#splatts'
+get 'users/follows/:id' => 'users#show_follows'
+get 'users/followers/:id' => 'users#show_followers'
+
+post 'users/follows' => 'users#add_follows'
+post 'users/splatts' => 'splatt#create'
+delete 'users/follows/:id/:follows_id' => 'users#delete_follows'
+
 get 'users/splatts-feed/:id' => 'users#splatts_feed'
- 
-  get 'users/follows/:id' => 'users#show_follows'
-  get 'users/followers/:id' => 'users#show_followers'
-  post 'users/follows' => 'users#add_follows'
-  delete 'users/follows/:id/:follows_id' => 'users#delete_follows'
+
 
  # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
